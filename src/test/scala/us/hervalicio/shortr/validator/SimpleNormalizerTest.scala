@@ -13,7 +13,7 @@ import us.hervalicio.shortr.shortener.ShortURLBuilder
   */
 class SimpleNormalizerTest extends FunSuite with MockitoSugar {
 
-  val normalizer = new SimpleNormalizer(new ShortURLBuilder("http://shr.tr", mock[IdGenerator]))
+  val normalizer = new SimpleNormalizer(new ShortURLBuilder("http://shr.tr"))
 
   test("A valid url passes validation") {
     val expected = LongURL(new URL("http://twitter.com"))

@@ -2,7 +2,7 @@ package us.hervalicio.shortr
 
 import org.scalatest.FunSuite
 import org.scalatest.mock.MockitoSugar
-import us.hervalicio.shortr.id.{Id, IdGenerator, UUIDGenerator}
+import us.hervalicio.shortr.id.{Id, IdGenerator}
 import us.hervalicio.shortr.shortener.ShortURLBuilder
 import us.hervalicio.shortr.validator.ShortURL
 
@@ -11,7 +11,7 @@ import us.hervalicio.shortr.validator.ShortURL
   */
 class ShortURLBuilderTest extends FunSuite with MockitoSugar {
 
-  val builder = new ShortURLBuilder("http://foo.com", mock[IdGenerator])
+  val builder = new ShortURLBuilder("http://foo.com")
 
   test("extracts from a url string") {
     assert(

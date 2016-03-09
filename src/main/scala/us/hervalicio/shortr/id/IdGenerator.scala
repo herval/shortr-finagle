@@ -9,6 +9,6 @@ import com.twitter.util.Future
   */
 trait IdGenerator {
 
-  def next(): Future[Id]
+  def nextId(): Future[Id]
 
 }

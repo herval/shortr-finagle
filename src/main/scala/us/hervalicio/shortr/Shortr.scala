@@ -6,7 +6,6 @@ import com.twitter.finagle.Service
 import com.twitter.finagle.builder.{Server, ServerBuilder}
 import com.twitter.finagle.http._
 import com.twitter.finagle.http.service.RoutingService
-import us.hervalicio.shortr.id.{MachineIdentifier, UUIDGenerator}
 import us.hervalicio.shortr.service.{ExpanderService, ParamValidator, ShortenerService}
 import us.hervalicio.shortr.shortener.ShortURLBuilder
 import us.hervalicio.shortr.storage.InMemoryStorage
@@ -18,9 +17,9 @@ import us.hervalicio.shortr.validator.SimpleNormalizer
 object Shortr extends App {
 
   val baseUrl = "http://shr.tr"
-  val builder = new ShortURLBuilder(baseUrl, new UUIDGenerator(MachineIdentifier(1)))
-  val normalizer = new SimpleNormalizer(builder)
+  val builder = new ShortURLBuilder(baseUrl) // new UUIDGenerator(MachineIdentifier(1)))
   val storage = new InMemoryStorage(builder)
+  val normalizer = new SimpleNormalizer(builder)
 
   val validate = new ParamValidator(normalizer)
   val shorten = new ShortenerService(storage)

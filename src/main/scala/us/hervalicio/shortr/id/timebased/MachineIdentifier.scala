@@ -1,4 +1,4 @@
-package us.hervalicio.shortr.id
+package us.hervalicio.shortr.id.timebased
 
 /**
   * Created by herval on 3/9/16.
