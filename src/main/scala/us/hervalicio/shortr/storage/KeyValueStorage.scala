@@ -5,6 +5,10 @@ package us.hervalicio.shortr.storage
   */
 trait KeyValueStorage {
 
+  def append[O](key: String, obj: O)
+
+  def list[O](key: String): List[O]
+
   def get[O](key: String): Option[O]
 
   def put[T](key: String, obj: T)

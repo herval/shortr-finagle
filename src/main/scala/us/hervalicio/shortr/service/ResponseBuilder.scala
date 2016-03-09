@@ -20,9 +20,10 @@ object ResponseBuilder {
 
   def missingParam() = Response(Http11, Status.BadRequest)
 
-  def success(url: ShortenedURL) = {
+  // make this typesafe
+  def success(data: AnyRef) = {
     val r = Response(Http11, Status.Ok)
-    r.contentString = jsonMapper.writeValueAsString(url)
+    r.contentString = jsonMapper.writeValueAsString(data)
     r
   }
 

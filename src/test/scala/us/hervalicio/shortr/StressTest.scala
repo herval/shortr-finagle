@@ -83,9 +83,9 @@ class StressTest extends FunSuite {
         totalRequests.toFloat / duration.inMillis.toFloat * 1000))
       println("%d errors".format(errors.get))
 
-      println("stats")
-      println("=====")
-      statsReceiver.print()
+//      println("stats")
+//      println("=====")
+//      statsReceiver.print()
     }
   }
 
@@ -93,7 +93,7 @@ class StressTest extends FunSuite {
     println("Starting server...")
     Shortr.main(Array())
 
-    val n = 1000
+    val n = 2000
 
     val longUrls = (1 to n).map { n =>
       s"http://example.com/${n}"
@@ -110,7 +110,7 @@ class StressTest extends FunSuite {
     Await.result(clock("/shorten", 100, n, new CircularQueue(shortenRequests)))
 
     // cheating a bit to get all urls in storage so we can try /expand
-    val expanderUrls = longUrls.map { u => Await.result(Shortr.urls.findOrCreate(new URL(u))) }
+    val expanderUrls = longUrls.take(100).map { u => Await.result(Shortr.urls.findOrCreate(new URL(u))) }
     val expandRequests = expanderUrls.map { url =>
       Request.queryString(
         "/expand",
@@ -118,7 +118,7 @@ class StressTest extends FunSuite {
       )
     }.toList
 
-    println("Testing expander")
+    println("Stress testing expander")
     Await.result(clock("/expand", 100, n, new CircularQueue(expandRequests)))
 
     Shortr.server.close()

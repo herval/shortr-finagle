@@ -12,7 +12,7 @@ import us.hervalicio.shortr.validator.{InvalidURL, Validator}
   *
   * Created by herval on 3/9/16.
   */
-class ParamValidator(validator: Validator) extends Filter[Request, Response, URLRequest, Response] {
+class ParamValidatorFilter(validator: Validator) extends Filter[Request, Response, URLRequest, Response] {
 
   override def apply(request: Request, service: Service[URLRequest, Response]): Future[Response] = {
     decodedParam(request) match {

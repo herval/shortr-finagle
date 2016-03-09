@@ -7,7 +7,7 @@ import com.twitter.finagle.builder.{Server, ServerBuilder}
 import com.twitter.finagle.http._
 import com.twitter.finagle.http.service.RoutingService
 import us.hervalicio.shortr.id.IdGeneratorClient
-import us.hervalicio.shortr.service.{ExpanderService, ParamValidator, ShortenerService, StatsService}
+import us.hervalicio.shortr.service.{ExpanderService, ParamValidatorFilter, ShortenerService, StatsService}
 import us.hervalicio.shortr.shortener.{ShortURLBuilder, URLStorageClient}
 import us.hervalicio.shortr.stats.StatsClient
 import us.hervalicio.shortr.storage.memory.InMemoryKeyValueStorage
@@ -26,10 +26,10 @@ object Shortr extends App {
   val urls = new URLStorageClient(builder, storage, ids)
   val stats = new StatsClient(storage)
 
-  val validate = new ParamValidator(new SimpleNormalizer(builder))
+  val validate = new ParamValidatorFilter(new SimpleNormalizer(builder))
   val shorten = new ShortenerService(urls)
-  val expand = new ExpanderService(urls)
-  val showStats = new StatsService(urls)
+  val expand = new ExpanderService(urls, stats)
+  val showStats = new StatsService(urls, stats)
 
   val router: Service[Request, Response] = RoutingService.byPath {
     case "/shorten" => validate andThen shorten
