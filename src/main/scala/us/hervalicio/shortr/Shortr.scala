@@ -7,11 +7,11 @@ import com.twitter.finagle.builder.{Server, ServerBuilder}
 import com.twitter.finagle.http._
 import com.twitter.finagle.http.service.RoutingService
 import us.hervalicio.shortr.id.IdGeneratorClient
-import us.hervalicio.shortr.service.{ExpanderService, ParamValidatorFilter, ShortenerService, StatsService}
-import us.hervalicio.shortr.shortener.{ShortURLBuilder, URLStorageClient}
-import us.hervalicio.shortr.stats.StatsClient
+import us.hervalicio.shortr.id.timebased.{MachineIdentifier, UUIDGenerator}
+import us.hervalicio.shortr.shortener.{ExpanderService, ShortURLBuilder, ShortenerService, URLStorageClient}
+import us.hervalicio.shortr.stats.{StatsClient, StatsService}
 import us.hervalicio.shortr.storage.memory.InMemoryKeyValueStorage
-import us.hervalicio.shortr.validator.SimpleNormalizer
+import us.hervalicio.shortr.validator.{ParamValidatorFilter, SimpleNormalizer}
 
 /**
   * Created by herval on 3/9/16.
@@ -22,7 +22,7 @@ object Shortr extends App {
   val storage = new InMemoryKeyValueStorage
   val builder = new ShortURLBuilder(baseUrl)
 
-  val ids = new IdGeneratorClient(storage)
+  val ids = new IdGeneratorClient(storage) // new UUIDGenerator(MachineIdentifier(1))
   val urls = new URLStorageClient(builder, storage, ids)
   val stats = new StatsClient(storage)
 

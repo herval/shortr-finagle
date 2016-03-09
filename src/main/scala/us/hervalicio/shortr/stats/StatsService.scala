@@ -1,10 +1,10 @@
-package us.hervalicio.shortr.service
+package us.hervalicio.shortr.stats
 
 import com.twitter.finagle.Service
 import com.twitter.finagle.http.Response
 import com.twitter.util.Future
-import us.hervalicio.shortr.shortener.URLStorageClient
-import us.hervalicio.shortr.stats.{ClickStats, StatsClient}
+import us.hervalicio.shortr.ResponseBuilder
+import us.hervalicio.shortr.shortener.{URLRequest, URLStorageClient}
 import us.hervalicio.shortr.validator.ShortURL
 
 /**

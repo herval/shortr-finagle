@@ -1,4 +1,4 @@
-package us.hervalicio.shortr.service
+package us.hervalicio.shortr.shortener
 
 import com.twitter.finagle.http.{Request, RequestProxy}
 import us.hervalicio.shortr.validator.NormalizedURL

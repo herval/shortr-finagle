@@ -1,11 +1,12 @@
-package us.hervalicio.shortr.service
+package us.hervalicio.shortr.validator
 
 import java.net.URLDecoder
 
 import com.twitter.finagle.http.{Request, Response}
 import com.twitter.finagle.{Filter, Service}
 import com.twitter.util.Future
-import us.hervalicio.shortr.validator.{InvalidURL, Validator}
+import us.hervalicio.shortr.ResponseBuilder
+import us.hervalicio.shortr.shortener.URLRequest
 
 /**
   * Validates if our url param is present and valid

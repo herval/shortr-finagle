@@ -1,9 +1,9 @@
-package us.hervalicio.shortr.service
+package us.hervalicio.shortr.shortener
 
 import com.twitter.finagle.Service
 import com.twitter.finagle.http.Response
 import com.twitter.util.Future
-import us.hervalicio.shortr.shortener.URLStorage
+import us.hervalicio.shortr.ResponseBuilder
 import us.hervalicio.shortr.validator.LongURL
 
 /**

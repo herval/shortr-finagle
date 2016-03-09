@@ -12,8 +12,8 @@ import us.hervalicio.shortr.id.Id
   */
 trait URLStorage {
 
-  def originalFor(id: Id): Future[Option[ShortenedURL]]
+  def originalFor(id: Id): Future[Option[URLPair]]
 
-  def findOrCreate(longUrl: URL): Future[ShortenedURL]
+  def findOrCreate(longUrl: URL): Future[URLPair]
 
 }

@@ -13,18 +13,18 @@ import us.hervalicio.shortr.storage.KeyValueStorage
   */
 class URLStorageClient(builder: ShortURLBuilder, storage: KeyValueStorage, idGenerator: IdGenerator) extends URLStorage {
 
-  override def originalFor(id: Id): Future[Option[ShortenedURL]] = Future {
-    storage.get[ShortenedURL](id.number.toString)
+  override def originalFor(id: Id): Future[Option[URLPair]] = Future {
+    storage.get[URLPair](id.number.toString)
   }
 
-  override def findOrCreate(longUrl: URL): Future[ShortenedURL] = {
+  override def findOrCreate(longUrl: URL): Future[URLPair] = {
     // since longUrl -> shortUrl can't be calculated, we need two lookups to find it
-    storage.get[String](longUrl.toString).flatMap(id => storage.get[ShortenedURL](id).map(Future.value)).
+    storage.get[String](longUrl.toString).flatMap(id => storage.get[URLPair](id).map(Future.value)).
         getOrElse {
           idGenerator.nextId().map { id =>
-            val newUrl = ShortenedURL(longUrl.toString, builder.urlFor(id))
+            val newUrl = URLPair(longUrl.toString, builder.urlFor(id))
             storage.put[String](longUrl.toString, id.number.toString)
-            storage.put[ShortenedURL](id.number.toString, newUrl)
+            storage.put[URLPair](id.number.toString, newUrl)
             newUrl
           }
         }
