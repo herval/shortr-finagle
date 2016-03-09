@@ -3,3 +3,6 @@ shortr.ipr
 shortr.iws
 project/target
 target/
+.DS_Store
+project/.DS_Store
+project/project/.DS_Store
