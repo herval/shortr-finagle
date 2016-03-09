@@ -3,7 +3,7 @@ package us.hervalicio.shortr.validator
 import java.net.URL
 
 import com.twitter.util.Future
-import us.hervalicio.shortr.ShortURLBuilder
+import us.hervalicio.shortr.shortener.ShortURLBuilder
 
 /**
   * Service that normalizes an input URL

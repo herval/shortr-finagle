@@ -1,4 +1,4 @@
-package us.hervalicio.shortr
+package us.hervalicio.shortr.shortener
 
 import us.hervalicio.shortr.id.Id
 import us.hervalicio.shortr.validator.ShortURL

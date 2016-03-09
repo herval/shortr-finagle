@@ -4,8 +4,8 @@ import java.net.URL
 
 import com.twitter.util.Await
 import org.scalatest.FunSuite
-import us.hervalicio.shortr.ShortURLBuilder
 import us.hervalicio.shortr.id.Id
+import us.hervalicio.shortr.shortener.ShortURLBuilder
 
 /**
   * Created by herval on 3/9/16.
@@ -28,9 +28,9 @@ class SimpleNormalizerTest extends FunSuite {
   }
 
   test("A short url passes validation") {
-    val expected = ShortURL(Id(387))
+    val expected = ShortURL(Id(123))
     assert(
-      Await.result(normalizer.normalize("http://shr.tr/foobar")) == expected
+      Await.result(normalizer.normalize("http://shr.tr/3f")) == expected
     )
   }
 

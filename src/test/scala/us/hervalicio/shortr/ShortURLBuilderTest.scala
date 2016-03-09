@@ -2,6 +2,7 @@ package us.hervalicio.shortr
 
 import org.scalatest.FunSuite
 import us.hervalicio.shortr.id.Id
+import us.hervalicio.shortr.shortener.ShortURLBuilder
 import us.hervalicio.shortr.validator.ShortURL
 
 /**

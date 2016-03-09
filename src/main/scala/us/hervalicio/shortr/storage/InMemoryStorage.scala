@@ -3,8 +3,8 @@ package us.hervalicio.shortr.storage
 import java.net.URL
 
 import com.twitter.util.Future
-import us.hervalicio.shortr.ShortURLBuilder
 import us.hervalicio.shortr.id.{Id, IdGenerator}
+import us.hervalicio.shortr.shortener.ShortURLBuilder
 
 import scala.collection.mutable
 

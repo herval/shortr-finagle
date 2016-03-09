@@ -7,7 +7,8 @@ import com.twitter.finagle.builder.{Server, ServerBuilder}
 import com.twitter.finagle.http._
 import com.twitter.finagle.http.service.RoutingService
 import us.hervalicio.shortr.id.TimestampBasedGenerator
-import us.hervalicio.shortr.service.{ExpanderService, ShortenerService}
+import us.hervalicio.shortr.service.{ExpanderService, ParamValidator, ShortenerService}
+import us.hervalicio.shortr.shortener.ShortURLBuilder
 import us.hervalicio.shortr.storage.InMemoryStorage
 import us.hervalicio.shortr.validator.SimpleNormalizer
 
@@ -23,12 +24,13 @@ object Shortr extends App {
     new TimestampBasedGenerator(InetAddress.getLocalHost.hashCode()), builder
   ) // TODO configure a machine id
 
-  val shortenerService = new ShortenerService(normalizer, storage)
-  val expanderService = new ExpanderService(normalizer, storage)
+  val validate = new ParamValidator(normalizer)
+  val shorten = new ShortenerService(storage)
+  val expand = new ExpanderService(storage)
 
   val router: Service[Request, Response] = RoutingService.byPath {
-    case "/shorten" => shortenerService
-    case "/expand" => expanderService
+    case "/shorten" => validate andThen shorten
+    case "/expand" => validate andThen expand
     // TODO analytics
   }
 
