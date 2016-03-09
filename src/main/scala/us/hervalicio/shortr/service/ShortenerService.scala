@@ -3,7 +3,7 @@ package us.hervalicio.shortr.service
 import com.twitter.finagle.Service
 import com.twitter.finagle.http.Response
 import com.twitter.util.Future
-import us.hervalicio.shortr.storage.ShortURLStorage
+import us.hervalicio.shortr.storage.Storage
 import us.hervalicio.shortr.validator.LongURL
 
 /**
@@ -11,7 +11,7 @@ import us.hervalicio.shortr.validator.LongURL
   *
   * Created by herval on 3/9/16.
   */
-class ShortenerService(val urls: ShortURLStorage) extends Service[URLRequest, Response] {
+class ShortenerService(val urls: Storage) extends Service[URLRequest, Response] {
 
   override def apply(request: URLRequest): Future[Response] = {
     request.requestedUrl match {

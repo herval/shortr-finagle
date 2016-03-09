@@ -50,7 +50,6 @@ class StressTest extends FunSuite {
         .hosts(new InetSocketAddress("localhost", 8080))
         .hostConnectionCoresize(concurrency)
         .reportTo(statsReceiver)
-        //        .retries(0)
         .hostConnectionLimit(concurrency)
         .build()
 
@@ -86,7 +85,6 @@ class StressTest extends FunSuite {
 
       println("stats")
       println("=====")
-
       statsReceiver.print()
     }
   }
@@ -95,7 +93,7 @@ class StressTest extends FunSuite {
     println("Starting server...")
     Shortr.main(Array())
 
-    val n = 5000
+    val n = 1000
 
     val longUrls = (1 to n).map { n =>
       s"http://example.com/${n}"
@@ -109,22 +107,21 @@ class StressTest extends FunSuite {
     }.toList
 
     println("Stress testing shortener")
-    Await.result(
-      clock("/shorten", 100, n, new CircularQueue(shortenRequests)).ensure {
+    Await.result(clock("/shorten", 100, n, new CircularQueue(shortenRequests)))
 
-        // cheating a bit to get all urls in storage so we can try /expand
-        val expanderUrls = longUrls.map { u => Await.result(Shortr.storage.findOrCreate(new URL(u))) }
-        val expandRequests = expanderUrls.map { url =>
-          Request.queryString(
-            "/expand",
-            Map("url" -> URLEncoder.encode(url.shortenedUrl, "UTF-8"))
-          )
-        }.toList
+    // cheating a bit to get all urls in storage so we can try /expand
+    val expanderUrls = longUrls.map { u => Await.result(Shortr.storage.findOrCreate(new URL(u))) }
+    val expandRequests = expanderUrls.map { url =>
+      Request.queryString(
+        "/expand",
+        Map("url" -> URLEncoder.encode(url.shortenedUrl, "UTF-8"))
+      )
+    }.toList
 
-        println("Testing expander")
-        clock("/expand", 100, n, new CircularQueue(expandRequests)).ensure {
-          Shortr.server.close()
-        }
-      })
+    println("Testing expander")
+    Await.result(clock("/expand", 100, n, new CircularQueue(expandRequests)))
+
+    Shortr.server.close()
   }
+
 }

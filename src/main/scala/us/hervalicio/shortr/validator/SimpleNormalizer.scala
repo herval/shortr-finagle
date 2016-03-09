@@ -20,7 +20,7 @@ class SimpleNormalizer(builder: ShortURLBuilder) extends Validator {
     try {
       url match {
         case builder.extractShortUrl(short) => short
-        case _ => LongURL(new URL(url)) // TODO this is slow?
+        case _ => LongURL(new URL(url))
       }
     } catch {
       case e: Exception => InvalidURL(url)
