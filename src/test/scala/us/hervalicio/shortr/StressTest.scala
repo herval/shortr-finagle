@@ -110,7 +110,7 @@ class StressTest extends FunSuite {
     Await.result(clock("/shorten", 100, n, new CircularQueue(shortenRequests)))
 
     // cheating a bit to get all urls in storage so we can try /expand
-    val expanderUrls = longUrls.map { u => Await.result(Shortr.storage.findOrCreate(new URL(u))) }
+    val expanderUrls = longUrls.map { u => Await.result(Shortr.urls.findOrCreate(new URL(u))) }
     val expandRequests = expanderUrls.map { url =>
       Request.queryString(
         "/expand",

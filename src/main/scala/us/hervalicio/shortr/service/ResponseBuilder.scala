@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.scala.DefaultScalaModule
 import com.twitter.finagle.http.Version.Http11
 import com.twitter.finagle.http.{Response, Status}
-import us.hervalicio.shortr.storage.ShortenedURL
+import us.hervalicio.shortr.shortener.ShortenedURL
 
 /**
   * Created by herval on 3/9/16.

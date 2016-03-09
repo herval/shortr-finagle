@@ -6,9 +6,11 @@ import com.twitter.finagle.Service
 import com.twitter.finagle.builder.{Server, ServerBuilder}
 import com.twitter.finagle.http._
 import com.twitter.finagle.http.service.RoutingService
-import us.hervalicio.shortr.service.{ExpanderService, ParamValidator, ShortenerService}
-import us.hervalicio.shortr.shortener.ShortURLBuilder
-import us.hervalicio.shortr.storage.InMemoryStorage
+import us.hervalicio.shortr.id.IdGeneratorClient
+import us.hervalicio.shortr.service.{ExpanderService, ParamValidator, ShortenerService, StatsService}
+import us.hervalicio.shortr.shortener.{ShortURLBuilder, URLStorageClient}
+import us.hervalicio.shortr.stats.StatsClient
+import us.hervalicio.shortr.storage.memory.InMemoryKeyValueStorage
 import us.hervalicio.shortr.validator.SimpleNormalizer
 
 /**
@@ -17,18 +19,22 @@ import us.hervalicio.shortr.validator.SimpleNormalizer
 object Shortr extends App {
 
   val baseUrl = "http://shr.tr"
-  val builder = new ShortURLBuilder(baseUrl) // new UUIDGenerator(MachineIdentifier(1)))
-  val storage = new InMemoryStorage(builder)
-  val normalizer = new SimpleNormalizer(builder)
+  val storage = new InMemoryKeyValueStorage
+  val builder = new ShortURLBuilder(baseUrl)
 
-  val validate = new ParamValidator(normalizer)
-  val shorten = new ShortenerService(storage)
-  val expand = new ExpanderService(storage)
+  val ids = new IdGeneratorClient(storage)
+  val urls = new URLStorageClient(builder, storage, ids)
+  val stats = new StatsClient(storage)
+
+  val validate = new ParamValidator(new SimpleNormalizer(builder))
+  val shorten = new ShortenerService(urls)
+  val expand = new ExpanderService(urls)
+  val showStats = new StatsService(urls)
 
   val router: Service[Request, Response] = RoutingService.byPath {
     case "/shorten" => validate andThen shorten
     case "/expand" => validate andThen expand
-    // TODO analytics
+    case "/stats" => validate andThen showStats
   }
 
   val server: Server = ServerBuilder()

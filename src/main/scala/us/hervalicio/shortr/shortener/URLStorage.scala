@@ -1,4 +1,4 @@
-package us.hervalicio.shortr.storage
+package us.hervalicio.shortr.shortener
 
 import java.net.URL
 
@@ -10,7 +10,7 @@ import us.hervalicio.shortr.id.Id
   *
   * Created by herval on 3/9/16.
   */
-trait Storage {
+trait URLStorage {
 
   def originalFor(id: Id): Future[Option[ShortenedURL]]
 

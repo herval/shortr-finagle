@@ -1,7 +1,7 @@
 package us.hervalicio.shortr.service
 
 import org.scalatest.FunSuite
-import us.hervalicio.shortr.storage.ShortenedURL
+import us.hervalicio.shortr.shortener.ShortenedURL
 
 /**
   * Created by herval on 3/9/16.

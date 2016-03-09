@@ -1,4 +1,4 @@
-package us.hervalicio.shortr.storage
+package us.hervalicio.shortr.shortener
 
 /**
   * Created by herval on 3/9/16.
