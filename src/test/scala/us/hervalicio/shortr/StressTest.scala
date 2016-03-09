@@ -9,20 +9,20 @@ import com.twitter.finagle.builder.ClientBuilder
 import com.twitter.finagle.http.{Http, _}
 import com.twitter.finagle.stats.SummarizingStatsReceiver
 import com.twitter.util.{Await, Future, Stopwatch}
+import org.scalatest.FunSuite
 
 import scala.collection.JavaConverters._
 
-
 // based on Finagle's example at https://github.com/twitter/finagle/blob/develop/finagle-example/src/main/scala/com/twitter/finagle/example/stress/Stress.scala
-object StressTest {
+class StressTest extends FunSuite {
 
   class CircularQueue[T](list: List[T]) {
     var current = 0
 
     def next(): T = synchronized {
       val item = list(current)
-      current+=1
-      if(current >= list.size) {
+      current += 1
+      if (current >= list.size) {
         current = 0
       }
       item
@@ -50,7 +50,7 @@ object StressTest {
         .hosts(new InetSocketAddress("localhost", 8080))
         .hostConnectionCoresize(concurrency)
         .reportTo(statsReceiver)
-//        .retries(0)
+        //        .retries(0)
         .hostConnectionLimit(concurrency)
         .build()
 
@@ -89,10 +89,9 @@ object StressTest {
 
       statsReceiver.print()
     }
-
   }
 
-  def main(args: Array[String]) {
+  test("Stress testing") {
     println("Starting server...")
     Shortr.main(Array())
 

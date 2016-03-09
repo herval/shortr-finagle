@@ -18,11 +18,9 @@ import us.hervalicio.shortr.validator.SimpleNormalizer
 object Shortr extends App {
 
   val baseUrl = "http://shr.tr"
-  val builder = new ShortURLBuilder(baseUrl)
+  val builder = new ShortURLBuilder(baseUrl, new UUIDGenerator(MachineIdentifier(1)))
   val normalizer = new SimpleNormalizer(builder)
-  val storage = new InMemoryStorage(
-    new UUIDGenerator(MachineIdentifier(1)), builder
-  ) // TODO configure a machine id per instance
+  val storage = new InMemoryStorage(builder)
 
   val validate = new ParamValidator(normalizer)
   val shorten = new ShortenerService(storage)

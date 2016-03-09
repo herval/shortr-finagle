@@ -1,6 +1,6 @@
 package us.hervalicio.shortr.shortener
 
-import us.hervalicio.shortr.id.Id
+import us.hervalicio.shortr.id.{Id, IdGenerator}
 import us.hervalicio.shortr.validator.ShortURL
 
 /**
@@ -8,8 +8,11 @@ import us.hervalicio.shortr.validator.ShortURL
   *
   * Created by herval on 3/9/16.
   */
-class ShortURLBuilder(baseUrl: String) {
+class ShortURLBuilder(baseUrl: String, generator: IdGenerator) {
+
   private val pattern = s"${baseUrl}/(\\w+).*".r
+
+  def nextId() = generator.next()
 
   def urlFor(id: Id): String = s"${baseUrl}/${id.readableString}"
 

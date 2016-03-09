@@ -4,15 +4,16 @@ import java.net.URL
 
 import com.twitter.util.Await
 import org.scalatest.FunSuite
-import us.hervalicio.shortr.id.Id
+import org.scalatest.mock.MockitoSugar
+import us.hervalicio.shortr.id.{Id, IdGenerator}
 import us.hervalicio.shortr.shortener.ShortURLBuilder
 
 /**
   * Created by herval on 3/9/16.
   */
-class SimpleNormalizerTest extends FunSuite {
+class SimpleNormalizerTest extends FunSuite with MockitoSugar {
 
-  val normalizer = new SimpleNormalizer(new ShortURLBuilder("http://shr.tr"))
+  val normalizer = new SimpleNormalizer(new ShortURLBuilder("http://shr.tr", mock[IdGenerator]))
 
   test("A valid url passes validation") {
     val expected = LongURL(new URL("http://twitter.com"))

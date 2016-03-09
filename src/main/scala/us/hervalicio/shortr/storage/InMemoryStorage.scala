@@ -13,7 +13,7 @@ import scala.collection.mutable
   *
   * Created by herval on 3/9/16.
   */
-class InMemoryStorage(generator: IdGenerator, builder: ShortURLBuilder) extends ShortURLStorage {
+class InMemoryStorage(builder: ShortURLBuilder) extends ShortURLStorage {
 
   private val urls: mutable.Map[Id, ShortenedURL] = new mutable.HashMap()
   private val originalToId: mutable.Map[String, Id] = new mutable.HashMap()
@@ -26,7 +26,7 @@ class InMemoryStorage(generator: IdGenerator, builder: ShortURLBuilder) extends 
     // since longUrl -> shortUrl can't be calculated, we need two lookups to find it
     originalToId.get(longUrl.toString).flatMap(id => urls.get(id).map(Future.value)).
         getOrElse {
-          generator.next().map { id =>
+          builder.nextId().map { id =>
             val newUrl = ShortenedURL(longUrl.toString, builder.urlFor(id))
             originalToId.put(longUrl.toString, id)
             urls.put(id, newUrl)
