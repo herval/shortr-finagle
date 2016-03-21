@@ -5,6 +5,9 @@ import com.fasterxml.jackson.module.scala.DefaultScalaModule
 import com.twitter.finagle.http.Version.Http11
 import com.twitter.finagle.http.{Response, Status}
 
+trait ResponseType
+
+
 /**
   * Created by herval on 3/9/16.
   */
@@ -19,8 +22,7 @@ object ResponseBuilder {
 
   def missingParam() = Response(Http11, Status.BadRequest)
 
-  // make this typesafe
-  def success(data: AnyRef) = {
+  def success(data: ResponseType) = {
     val r = Response(Http11, Status.Ok)
     r.contentString = jsonMapper.writeValueAsString(data)
     r
